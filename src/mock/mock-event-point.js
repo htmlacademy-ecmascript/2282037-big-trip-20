@@ -1,11 +1,11 @@
 import { EVENT_TYPES_LIST } from '../constants.js';
-import { getRandomIntNumber, getRandomArrElement, getUniqueRandomArrElements } from '../utils.js';
+import { getRandomIntNumber, getRandomArrElement, getUniqueRandomArrElements } from '../utils/common.js';
 
 const DESTINATIONS_COUNT = 10;
 const MAX_PICTURES_COUNT = 5;
 const MAX_OFFERS_COUNT = 6;
 const MAX_SELECTED_OFFERS_COUNT = 3;
-const MAX_EVENTS_COUNT = 5;
+const MAX_EVENTS_COUNT = 9;
 
 const MIN_PRICE = 100;
 const MAX_PRICE = 1000;
@@ -27,44 +27,44 @@ const CITIES_DESCRIPTIONS = {
 
 const TIMESLOTS = [
   {
-    start: '2022-07-10T22:55:56.845Z',
-    end: '2022-07-12T20:00:06.845Z'
+    start: '2023-07-10T22:55:56.845Z',
+    end: '2023-07-12T20:00:06.845Z'
   },
   {
-    start: '2022-07-08T10:35:00.845Z',
-    end: '2022-07-10T21:00:06.845Z'
+    start: '2023-07-08T10:35:00.845Z',
+    end: '2023-07-10T21:00:06.845Z'
   },
   {
-    start: '2022-08-20T09:35:00.845Z',
-    end: '2022-08-25T09:35:00.845Z'
+    start: '2023-08-20T09:35:00.845Z',
+    end: '2023-08-25T09:35:00.845Z'
   },
   {
-    start: '2022-08-05T14:00:00.845Z',
-    end: '2022-08-19T15:00:00.845Z'
+    start: '2023-08-05T14:00:00.845Z',
+    end: '2023-08-19T15:00:00.845Z'
   },
   {
-    start: '2022-06-11T06:35:00.845Z',
-    end: '2022-06-14T08:31:10.845Z'
+    start: '2023-06-11T06:35:00.845Z',
+    end: '2023-06-14T08:31:10.845Z'
   },
   {
-    start: '2022-06-14T19:15:05.845Z',
-    end: '2022-06-14T19:31:10.845Z'
+    start: '2023-06-14T19:15:05.845Z',
+    end: '2023-06-14T19:31:10.845Z'
   },
   {
-    start: '2022-09-01T00:00:00.845Z',
-    end: '2022-09-03T20:00:10.845Z'
+    start: '2023-09-01T00:00:00.845Z',
+    end: '2023-09-03T20:00:10.845Z'
   },
   {
-    start: '2022-09-03T21:15:05.845Z',
-    end: '2022-09-03T21:30:10.845Z'
+    start: '2023-09-03T21:15:05.845Z',
+    end: '2023-09-03T21:30:10.845Z'
   },
   {
-    start: '2022-09-04T21:15:05.845Z',
-    end: '2022-09-04T22:15:05.845Z'
+    start: '2023-09-04T21:15:05.845Z',
+    end: '2023-09-04T22:15:05.845Z'
   },
   {
-    start: '2022-09-10T21:15:05.845Z',
-    end: '2022-09-11T11:30:10.845Z'
+    start: '2023-09-10T21:15:05.845Z',
+    end: '2023-09-11T11:30:10.845Z'
   },
 ];
 
