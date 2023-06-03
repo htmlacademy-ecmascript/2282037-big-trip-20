@@ -15,4 +15,5 @@ const eventsListPresenter = new EventsListPresenter(tripEventsElement, pointsMod
 
 const filteredEvents = generateFilteredEvents(pointsModel.eventPoints);
 
-render(new FiltersView(filteredEvents), filterElement);eventsListPresenter.init();
+render(new FiltersView(filteredEvents), filterElement);
+eventsListPresenter.init();
