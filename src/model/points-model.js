@@ -1,26 +1,115 @@
-import {getRandomMockEvents} from '../mock/mock-event-point.js';
+import Observable from '../framework/observable.js';
+import { UpdateLevel } from '../constants.js';
 
-const EVENT_POINTS_COUNT = 9;
+export default class PointsModel extends Observable {
+  #tripApiService = null;
 
-export default class PointsModel {
-  #eventPoints = null;
+  #destinations = [];
+  #offers = [];
+  #eventPoints = [];
 
-  constructor(destinations, offers) {
-
-    const eventPoints = getRandomMockEvents(EVENT_POINTS_COUNT).map((point) => {
-      const destination = destinations.find((dest) => dest.id === point.destination) ?? null;
-      const typeOffers = offers.find((typeOffer) => typeOffer.type === point.type);
-      return {
-        ...point,
-        destination,
-        offers: typeOffers.offers.map((offer) => ({...offer, checked: point.offers.includes(offer.id)}))
-      };
-    });
-
-    this.#eventPoints = eventPoints;
+  constructor(tripApiService) {
+    super();
+    this.#tripApiService = tripApiService;
   }
 
   get eventPoints() {
     return this.#eventPoints;
+  }
+
+  get destinations() {
+    return this.#destinations;
+  }
+
+  get offers() {
+    return this.#offers;
+  }
+
+  async init() {
+    try {
+      const eventPoints = await this.#tripApiService.eventPoints;
+      this.#destinations = await this.#tripApiService.destinations;
+      this.#offers = await this.#tripApiService.offers;
+
+      this.#eventPoints = eventPoints.map((point) => this.#adaptToClient(point));
+    } catch (err) {
+      this.#eventPoints = [];
+    }
+
+    this._notify(UpdateLevel.INIT);
+  }
+
+  async updatePoint(updateLevel, updatedPoint) {
+    try {
+      const response = await this.#tripApiService.updatePoint(updatedPoint);
+      const updatedEventPoint = this.#adaptToClient(response);
+
+      const index = this.#eventPoints.findIndex((point) => point.id === updatedPoint.id);
+
+      this.#eventPoints = [
+        ...this.#eventPoints.slice(0, index),
+        updatedEventPoint,
+        ...this.#eventPoints.slice(index + 1)
+      ];
+
+      this._notify(updateLevel, updatedEventPoint);
+    } catch (err) {
+      throw new Error('Can\'t update event point');
+    }
+  }
+
+  async addNewPoint(updateLevel, updatedPoint) {
+    try {
+      const response = await this.#tripApiService.addNewPoint(updatedPoint);
+      const newEventPoint = this.#adaptToClient(response);
+
+      this.#eventPoints = [
+        newEventPoint,
+        ...this.#eventPoints
+      ];
+
+      this._notify(updateLevel, updatedPoint);
+    } catch (err) {
+      throw new Error('Can\'t add new event point');
+    }
+  }
+
+  async deletePoint(updateLevel, updatedPoint) {
+
+    try {
+      await this.#tripApiService.deletePoint(updatedPoint);
+      const index = this.#eventPoints.findIndex((point) => point.id === updatedPoint.id);
+
+      this.#eventPoints = [
+        ...this.#eventPoints.slice(0, index),
+        ...this.#eventPoints.slice(index + 1)
+      ];
+
+      this._notify(updateLevel, updatedPoint);
+    } catch (err) {
+      throw new Error('Can\'t delete event point');
+    }
+  }
+
+  #adaptToClient(eventPoint) {
+    const destination = this.#destinations.find((dest) => dest.id === eventPoint['destination']) ?? null;
+    const typeOffers = this.#offers.find((typeOffer) => typeOffer.type === eventPoint['type']);
+
+    const adaptedPoint = {
+      ...eventPoint,
+      basePrice: eventPoint['base_price'],
+      dateFrom: eventPoint['date_from'] !== null ? new Date(eventPoint['date_from']) : eventPoint['date_from'],
+      dateTo: eventPoint['date_to'] !== null ? new Date(eventPoint['date_to']) : eventPoint['date_to'],
+      isFavorite: eventPoint['is_favorite'],
+      destination,
+      offers: typeOffers ? typeOffers.offers.map((offer) => ({ ...offer, checked: eventPoint['offers'].includes(offer.id) })) : []
+    };
+
+    delete adaptedPoint['base_price'];
+    delete adaptedPoint['date_from'];
+    delete adaptedPoint['date_to'];
+    delete adaptedPoint['is_favorite'];
+
+    return adaptedPoint;
   }
 }
