@@ -7,7 +7,7 @@ import NewPointButtonView from './view/new-point-button-view.js';
 import TripApiService from './trip-api-service.js';
 
 const AUTH_TOKEN = 'Basic kTy9gIdsz2317rD';
-const END_POINT = 'https://20.ecmascript.pages.academy/big-trip';
+const END_POINT = 'https://19.ecmascript.pages.academy/big-trip/';
 
 const tripApiService = new TripApiService(END_POINT, AUTH_TOKEN);
 
