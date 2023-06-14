@@ -1,4 +1,4 @@
-const EventType = {
+const EventTypes = {
   TAXI: 'taxi',
   BUS: 'bus',
   TRAIN: 'train',
@@ -10,9 +10,9 @@ const EventType = {
   RESTAURANT: 'restaurant'
 };
 
-const EVENT_TYPES_LIST = Object.values(EventType);
+const EVENT_TYPES_LIST = Object.values(EventTypes);
 
-const SortType = {
+const SortTypes = {
   DAY: 'day',
   EVENT: 'event',
   TIME: 'time',
@@ -20,35 +20,37 @@ const SortType = {
   OFFER: 'offer'
 };
 
-const FilterType = {
+const FilterTypes = {
   EVERYTHING: 'everything',
   FUTURE: 'future',
   PRESENT: 'present',
   PAST: 'past'
 };
 
-const EmptyListMessage = {
-  [FilterType.EVERYTHING]: 'Click New Event to create your first point',
-  [FilterType.FUTURE]: 'There are no future events now',
-  [FilterType.PRESENT]: 'There are no present events now',
-  [FilterType.PAST]: 'There are no past events now'
+const EmptyListMessages = {
+  [FilterTypes.EVERYTHING]:'Click New Event to create your first point',
+  [FilterTypes.FUTURE]: 'There are no future events now',
+  [FilterTypes.PRESENT]: 'There are no present events now',
+  [FilterTypes.PAST]: 'There are no past events now'
 };
 
-const PointActionType = {
+const PointActionTypes = {
   UPDATE: 'UPDATE',
   ADD: 'ADD',
   DELETE: 'DELETE'
 };
 
-const UpdateLevel = {
+const UpdateLevels = {
   PATCH: 'PATCH',
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
-  INIT: 'INIT'
 };
 
 
-const DEFAULT_EVENT_TYPE = EventType.FLIGHT;
-const DISABLED_SORT_TYPES = [SortType.EVENT, SortType.OFFER];
+const DEFAULT_EVENT_TYPE = EventTypes.FLIGHT;
+const DEFAULT_FILTER_TYPE = FilterTypes.EVERYTHING;
+const DEFAULT_SORT_TYPE = SortTypes.DAY;
 
-export { EventType, FilterType, SortType, EmptyListMessage, PointActionType, UpdateLevel, EVENT_TYPES_LIST, DEFAULT_EVENT_TYPE, DISABLED_SORT_TYPES };
+const DISABLED_SORT_TYPES = [SortTypes.EVENT, SortTypes.OFFER];
+
+export { EventTypes, FilterTypes, SortTypes, EmptyListMessages, PointActionTypes, UpdateLevels, EVENT_TYPES_LIST, DEFAULT_EVENT_TYPE, DEFAULT_FILTER_TYPE, DEFAULT_SORT_TYPE, DISABLED_SORT_TYPES };

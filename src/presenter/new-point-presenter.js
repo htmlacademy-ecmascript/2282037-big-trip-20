@@ -1,6 +1,9 @@
-import { PointActionType, UpdateLevel } from '../constants.js';
-import { remove, render, RenderPosition } from '../framework/render.js';
+import { PointActionTypes, UpdateLevels } from '../constants.js';
+import {remove, render, RenderPosition } from '../framework/render.js';
 import EditPointView from '../view/edit-point-view.js';
+import { customAlphabet } from 'nanoid';
+
+const nanoid = customAlphabet('1234567890', 4);
 
 export default class NewPointPresenter {
   #eventsListContainer = null;
@@ -18,12 +21,11 @@ export default class NewPointPresenter {
   #restoreEmptyBoard = null;
 
   constructor(
-    {
-      onDataChange,
-      restoreEmptyBoard,
-      onNewPointEditorCancel,
-      pointsModel
-    }) {
+    onDataChange,
+    restoreEmptyBoard,
+    onNewPointEditorCancel,
+    pointsModel
+  ) {
     this.#handleDataChange = onDataChange;
     this.#restoreEmptyBoard = restoreEmptyBoard;
     this.#handleNewPointEditorCancel = onNewPointEditorCancel;
@@ -69,33 +71,14 @@ export default class NewPointPresenter {
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   }
 
-  setSaving() {
-    this.#editPointComponent.updateElement({
-      isDisabled: true,
-      isSaving: true,
-    });
-  }
-
-  setAborting() {
-    const resetFormState = () => {
-      this.#editPointComponent.updateElement(
-        {
-          isDisabled: false,
-          isSaving: false,
-          isDeleting: false,
-        }
-      );
-    };
-
-    this.#editPointComponent.shake(resetFormState);
-  }
-
   #handleEditorFormSubmit = (newPoint) => {
     this.#handleDataChange(
-      PointActionType.ADD,
-      UpdateLevel.MINOR,
-      newPoint
+      PointActionTypes.ADD,
+      UpdateLevels.MINOR,
+      {...newPoint, id: nanoid(4)}
     );
+
+    this.destroyComponent();
   };
 
   #handleEditorFormDelete = () => {
