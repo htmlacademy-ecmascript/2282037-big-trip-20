@@ -1,10 +1,10 @@
-import { remove, render, replace } from '../framework/render.js';
+import {remove, render, replace} from '../framework/render.js';
 import EventPointView from '../view/event-point-view.js';
 import EditPointView from '../view/edit-point-view.js';
-import { PointActionType, UpdateLevel } from '../constants.js';
+import { PointActionTypes, UpdateLevels } from '../constants.js';
 import { areDatesEqual } from '../utils/point-event-utils.js';
 
-const Mode = {
+const Modes = {
   DEFAULT: 'DEFAULT',
   EDIT: 'EDIT',
 };
@@ -19,7 +19,7 @@ export default class EventPointPresenter {
   #destinations = null;
   #offers = null;
 
-  #viewMode = Mode.DEFAULT;
+  #viewMode = Modes.DEFAULT;
 
   #handleDataChange = null;
   #handleViewModeChange = null;
@@ -31,6 +31,7 @@ export default class EventPointPresenter {
   }
 
   init(eventPoint, destinations, offers) {
+
     const prevEventPointComponent = this.#eventPointComponent;
     const prevEditPointComponent = this.#editPointComponent;
 
@@ -51,9 +52,9 @@ export default class EventPointPresenter {
         eventPoint: this.#eventPoint,
         destinations: this.#destinations,
         offers: this.#offers,
-        onCloseEditorButtonClick: this.#handleCloseEditorButtonClick,
-        onEditorFormSubmit: this.#handleEditorFormSubmit,
-        onEditorFormDelete: this.#handleEditorFormDelete
+        onCloseEditorButtonClick : this.#handleCloseEditorButtonClick,
+        onEditorFormSubmit : this.#handleEditorFormSubmit,
+        onEditorFormDelete : this.#handleEditorFormDelete
       }
     );
 
@@ -62,13 +63,12 @@ export default class EventPointPresenter {
       return;
     }
 
-    if (this.#viewMode === Mode.DEFAULT) {
+    if (this.#viewMode === Modes.DEFAULT) {
       replace(this.#eventPointComponent, prevEventPointComponent);
     }
 
-    if (this.#viewMode === Mode.EDIT) {
-      replace(this.#eventPointComponent, prevEditPointComponent);
-      this.#viewMode = Mode.DEFAULT;
+    if (this.#viewMode === Modes.EDIT) {
+      replace(this.#editPointComponent, prevEditPointComponent);
     }
 
     remove(prevEventPointComponent);
@@ -81,47 +81,10 @@ export default class EventPointPresenter {
   }
 
   resetView() {
-    if (this.#viewMode !== Mode.DEFAULT) {
+    if (this.#viewMode !== Modes.DEFAULT) {
       this.#editPointComponent.reset(this.#eventPoint);
       this.#replaceEditorToPoint();
     }
-  }
-
-  setSaving() {
-    if (this.#viewMode === Mode.EDIT) {
-      this.#editPointComponent.updateElement({
-        isDisabled: true,
-        isSaving: true,
-      });
-    }
-  }
-
-  setDeleting() {
-    if (this.#viewMode === Mode.EDIT) {
-      this.#editPointComponent.updateElement({
-        isDisabled: true,
-        isDeleting: true,
-      });
-    }
-  }
-
-  setAborting() {
-    if (this.#viewMode === Mode.DEFAULT) {
-      this.#eventPointComponent.shake();
-      return;
-    }
-
-    const resetFormState = () => {
-      this.#editPointComponent.updateElement(
-        {
-          isDisabled: false,
-          isSaving: false,
-          isDeleting: false,
-        }
-      );
-    };
-
-    this.#editPointComponent.shake(resetFormState);
   }
 
   #escKeyDownHandler = (evt) => {
@@ -133,17 +96,17 @@ export default class EventPointPresenter {
     }
   };
 
-  #replacePointToEditor() {
+  #replacePointToEditor () {
     replace(this.#editPointComponent, this.#eventPointComponent);
     document.addEventListener('keydown', this.#escKeyDownHandler);
     this.#handleViewModeChange();
-    this.#viewMode = Mode.EDIT;
+    this.#viewMode = Modes.EDIT;
   }
 
-  #replaceEditorToPoint() {
+  #replaceEditorToPoint () {
     replace(this.#eventPointComponent, this.#editPointComponent);
     document.removeEventListener('keydown', this.#escKeyDownHandler);
-    this.#viewMode = Mode.DEFAULT;
+    this.#viewMode = Modes.DEFAULT;
   }
 
   #handleOpenEditorButtonClick = () => this.#replacePointToEditor();
@@ -159,25 +122,28 @@ export default class EventPointPresenter {
       || (this.#eventPoint.basePrice !== updatedPoint.basePrice);
 
     this.#handleDataChange(
-      PointActionType.UPDATE,
-      isMinorUpdate ? UpdateLevel.MINOR : UpdateLevel.PATCH,
+      PointActionTypes.UPDATE,
+      isMinorUpdate ? UpdateLevels.MINOR : UpdateLevels.PATCH,
       updatedPoint
     );
+
+    this.#replaceEditorToPoint();
   };
 
   #handleFavoriteButtonCLick = () => {
     this.#handleDataChange(
-      PointActionType.UPDATE,
-      UpdateLevel.PATCH,
-      { ...this.#eventPoint, isFavorite: !this.#eventPoint.isFavorite }
+      PointActionTypes.UPDATE,
+      UpdateLevels.PATCH,
+      {...this.#eventPoint, isFavorite: !this.#eventPoint.isFavorite}
     );
   };
 
   #handleEditorFormDelete = (updatedPoint) => {
     this.#handleDataChange(
-      PointActionType.DELETE,
-      UpdateLevel.MINOR,
+      PointActionTypes.DELETE,
+      UpdateLevels.MINOR,
       updatedPoint
     );
   };
+
 }
