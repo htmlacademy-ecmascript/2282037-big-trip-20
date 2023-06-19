@@ -47,7 +47,6 @@ const UpdateLevels = {
   INIT: 'INIT'
 };
 
-
 const DEFAULT_EVENT_TYPE = EventTypes.FLIGHT;
 const DEFAULT_FILTER_TYPE = FilterTypes.EVERYTHING;
 const DEFAULT_SORT_TYPE = SortTypes.DAY;
