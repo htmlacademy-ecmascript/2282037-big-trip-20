@@ -1,6 +1,6 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import { formatDateTime } from '../utils/point-event-utils.js';
-import { collapseAdjacentDuplicates } from '../utils/common.js';
+import { collapseAdjacentDuplicates } from '../utils/commons.js';
 import dayjs from 'dayjs';
 
 const ONLY_DAY_FORMAT = 'D';
@@ -26,16 +26,18 @@ function createCitiesRouteTemplate(citiesList) {
   let middleCity = '';
   let endCity = '';
 
-  if (filteredCities.length === 1) {
+  const lengthFfilteredCities = [1,2,3];
+
+  if (filteredCities.length === lengthFfilteredCities[0]) {
     return startCity;
   }
 
-  if (filteredCities.length === 2) {
+  if (filteredCities.length === lengthFfilteredCities[1]) {
     endCity = filteredCities[1];
     return `${startCity} &mdash; ${endCity}`;
   }
 
-  if (filteredCities.length === 3) {
+  if (filteredCities.length === lengthFfilteredCities[2]) {
     middleCity = filteredCities[1];
     endCity = filteredCities[2];
   } else {
