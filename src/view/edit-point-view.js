@@ -7,11 +7,15 @@ import flatpickr from 'flatpickr';
 import 'flatpickr/dist/themes/material_blue.css';
 
 const DATETIME_FORMAT = 'DD/MM/YY HH:mm';
+const DATEFROMSTARTHOURS = 0;
+const DATEFROMSTARTMINUTES = 0;
+const DATETOENDHOURS = 23;
+const DATETOENDMINUTES = 59;
 
 const NEW_EVENT_POINT = {
   basePrice: '',
-  dateFrom: new Date(new Date().setHours(0, 0)),
-  dateTo: new Date(new Date().setHours(23, 59)),
+  dateFrom: new Date(new Date().setHours(DATEFROMSTARTHOURS, DATEFROMSTARTMINUTES)),
+  dateTo: new Date(new Date().setHours(DATETOENDHOURS, DATETOENDMINUTES)),
   destination: null,
   isFavorite: false,
   type: DEFAULT_EVENT_TYPE,

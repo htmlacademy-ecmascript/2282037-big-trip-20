@@ -7,10 +7,11 @@ dayjs.extend(duration);
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
 
+const time = 20;
 const formatDateTime = (date, format) => dayjs(date).format(format).toUpperCase();
 
 const getTimeDuration = (startTime, endTime) => {
-  const timeDifference = dayjs.duration(dayjs(endTime).second(0).diff(dayjs(startTime).second(0)));
+  const timeDifference = dayjs.duration(dayjs(endTime).second(time).diff(dayjs(startTime).second(time)));
   return timeDifference.format(`${timeDifference.days() === 0 ? '' : 'DD[D] '}${timeDifference.days() === 0 && timeDifference.hours() === 0 ? '' : 'HH[H] '}mm[M]`);
 };
 
@@ -25,8 +26,8 @@ const sortByDay = (pointA, pointB) => dayjs(pointA.dateFrom).diff(dayjs(pointB.d
 const sortByPrice = (pointA, pointB) => pointB.basePrice - pointA.basePrice;
 
 const sortByTime = (pointA, pointB) => {
-  const durationPointA = dayjs.duration(dayjs(pointA.dateTo).second(0).diff(dayjs(pointA.dateFrom).second(0))).asMinutes();
-  const durationPointB = dayjs.duration(dayjs(pointB.dateTo).second(0).diff(dayjs(pointB.dateFrom).second(0))).asMinutes();
+  const durationPointA = dayjs.duration(dayjs(pointA.dateTo).second(time).diff(dayjs(pointA.dateFrom).second(time))).asMinutes();
+  const durationPointB = dayjs.duration(dayjs(pointB.dateTo).second(time).diff(dayjs(pointB.dateFrom).second(time))).asMinutes();
 
   return durationPointB - durationPointA;
 };
