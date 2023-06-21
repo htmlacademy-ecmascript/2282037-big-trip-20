@@ -47,7 +47,7 @@ export default class FiltersView extends AbstractView {
     this.#currentFilterType = currentFilterType;
     this.#handleFilterTypeChange = onFilterTypeChange;
 
-    this.querySelector('.trip-controls__filters').addEventListener('change', this.#filterTypeChangeHandler);
+    this.element.addEventListener('change', this.#filterTypeChangeHandler);
   }
 
   get template() {
