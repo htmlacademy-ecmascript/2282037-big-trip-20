@@ -1,6 +1,6 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import { formatDateTime } from '../utils/point-event-utils.js';
-import { collapseAdjacentDuplicates } from '../utils/commons.js';
+import { collapseAdjacentDuplicates } from '../utils/common.js';
 import dayjs from 'dayjs';
 
 const ONLY_DAY_FORMAT = 'D';
@@ -19,42 +19,16 @@ function createTripDurationTemplate(startTripDate, endTripDate) {
   return endDate ? `${startDate}&nbsp;&mdash;&nbsp;${endDate}` : startDate;
 }
 
-function createCitiesRouteTemplate(citiesList) {
-  const filteredCities = collapseAdjacentDuplicates(citiesList);
-
-  const startCity = filteredCities[0];
-  let middleCity = '';
-  let endCity = '';
-
-  const lengthFfilteredCities = [1,2,3];
-
-  if (filteredCities.length === lengthFfilteredCities[0]) {
-    return startCity;
-  }
-
-  if (filteredCities.length === lengthFfilteredCities[1]) {
-    endCity = filteredCities[1];
-    return `${startCity} &mdash; ${endCity}`;
-  }
-
-  if (filteredCities.length === lengthFfilteredCities[2]) {
-    middleCity = filteredCities[1];
-    endCity = filteredCities[2];
-  } else {
-    middleCity = '...';
-    endCity = filteredCities[filteredCities.length - 1];
-  }
-
-  return `${startCity} &mdash; ${middleCity} &mdash; ${endCity}`;
-}
 
 function createTripInfoTemplate(tripInfo) {
   const { startTripDate, endTripDate, citiesList, totalPrice } = tripInfo;
+  const MAX_TRIP_LENGTH = 3;
 
+  const filteredCities = collapseAdjacentDuplicates(citiesList);
   return (
     `<section class="trip-main__trip-info  trip-info">
       <div class="trip-info__main">
-        <h1 class="trip-info__title">${createCitiesRouteTemplate(citiesList)}</h1>
+        <h1 class="trip-info__title">${filteredCities.length > MAX_TRIP_LENGTH ? `${filteredCities[0]} &mdash; ... &mdash; ${filteredCities[filteredCities.length - 1]}` : filteredCities.join(' &mdash; ')}</h1>
 
         <p class="trip-info__dates">${createTripDurationTemplate(startTripDate, endTripDate)}</p>
       </div>
