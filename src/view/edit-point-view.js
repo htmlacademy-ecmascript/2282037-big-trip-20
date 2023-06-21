@@ -6,12 +6,16 @@ import flatpickr from 'flatpickr';
 
 import 'flatpickr/dist/themes/material_blue.css';
 
-const DATETIME_FORMAT = 'DD/MM/YY HH:mm';
+const DATE_TIME_FORMAT = 'DD/MM/YY HH:mm';
+const DATE_FROM_START_HOURS = 0;
+const DATE_FROM_START_MINUTES = 0;
+const DATE_TO_END_HOURS = 23;
+const DATE_TO_END_MINUTES = 59;
 
 const NEW_EVENT_POINT = {
   basePrice: '',
-  dateFrom: new Date(new Date().setHours(0, 0)),
-  dateTo: new Date(new Date().setHours(23, 59)),
+  dateFrom: new Date(new Date().setHours(DATE_FROM_START_HOURS, DATE_FROM_START_MINUTES)),
+  dateTo: new Date(new Date().setHours(DATE_TO_END_HOURS, DATE_TO_END_MINUTES)),
   destination: null,
   isFavorite: false,
   type: DEFAULT_EVENT_TYPE,
@@ -157,8 +161,8 @@ function createEditorTemplate(data, allDestinations) {
 
   const name = destination ? destination.name : '';
 
-  const eventStartDate = formatDateTime(dateFrom, DATETIME_FORMAT);
-  const eventEndDate = formatDateTime(dateTo, DATETIME_FORMAT);
+  const eventStartDate = formatDateTime(dateFrom, DATE_TIME_FORMAT);
+  const eventEndDate = formatDateTime(dateTo, DATE_TIME_FORMAT);
 
   return (
     `<li class="trip-events__item">
