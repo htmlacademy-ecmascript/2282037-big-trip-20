@@ -21,6 +21,7 @@ const tripEventsElement = pageMainElement.querySelector('.trip-events');
 const pointsModel = new PointsModel(tripApiService);
 const filtersModel = new FiltersModel();
 
+
 const filterPresenter = new FilterPresenter(filterElement, filtersModel, pointsModel);
 const eventsListPresenter = new EventsListPresenter(
   {
