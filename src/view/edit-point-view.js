@@ -396,6 +396,7 @@ export default class EditPointView extends AbstractStatefulView {
   #pointOfferToggleHandler = (evt) => {
     evt.preventDefault();
     const offerElement = evt.target.closest('.event__offer-selector');
+
     if (!offerElement) {
       return;
     }
@@ -403,7 +404,8 @@ export default class EditPointView extends AbstractStatefulView {
     const offerElementId = offerElement.querySelector('.event__offer-checkbox').dataset.offerId;
     this.updateElement({
       offers: this._state.offers.map((offer) =>
-        offer.id === +offerElementId ? { ...offer, checked: !offer.checked } : offer
+        offer.id === offerElementId ? { ...offer, checked: !offer.checked } : offer
+
       )
     });
   };
